@@ -9,6 +9,8 @@ A Spring Boot backend for reserving parking slots in a single parking facility. 
 - Spring Data JPA (Hibernate), MySQL 8
 - Flyway for versioned database migrations
 - Spring Scheduler for automatic expiry
+- Swagger UI (springdoc-openapi) for API documentation
+- JUnit 5 and Mockito for unit tests
 - Maven
 
 ## Features
@@ -58,6 +60,16 @@ Tables: `users`, `slot_types`, `slots`, `bookings`, `booking_extensions`.
 | POST | `/api/admin/bookings/{id}/confirm` | Admin | Confirm a booking (temporary, until payments) |
 | POST | `/api/admin/extensions/{id}/confirm` | Admin | Confirm an extension (temporary, until payments) |
 
+## API documentation (Swagger)
+
+After starting the application, open:
+
+```
+http://localhost:8080/swagger-ui/index.html
+```
+
+To try protected endpoints: call `POST /api/auth/login`, copy the token, click **Authorize**, and paste it.
+
 ## Run locally
 
 1. Install Java 25 and MySQL 8.
@@ -76,7 +88,15 @@ Tables: `users`, `slot_types`, `slots`, `bookings`, `booking_extensions`.
    ```
    Flyway creates all tables on the first start. The API runs on `http://localhost:8080`.
 
+## Run the tests
+
+```
+./mvnw test
+```
+
+The unit tests cover the booking service: price calculation, overlap rejection, inactive slots, invalid time ranges, and ownership checks on cancellation.
+
 ## Project status
 
-- Done: authentication, slot management, availability search, booking with locking, cancellation, extension, automatic expiry
-- Planned: unit tests (JUnit and Mockito), Swagger API documentation, online payment integration
+- Done: authentication, slot management, availability search, booking with locking, cancellation, extension, automatic expiry, unit tests for the booking service, Swagger documentation
+- Planned: unit tests for extension logic, online payment integration
